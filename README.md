@@ -6,7 +6,7 @@ ccsrch-score is a small CLI application to apply scoring to result files generat
 
 `ccsrch-score.exe <output.txt>`
 
-Where `<output.txt>` is the name of the file you passed to the `-o` parameter of `ccsrch`.
+Where `<output.txt>` is the name of the file you passed to the `-o` parameter of `ccsrch`. If your output file is called `output.txt` - a file called `output_scored.txt` will be created that contains the original content, plus a number (0 to 9) to indicate the likelyhood that it's a real credit card number.
 
 ## How does it work?
 

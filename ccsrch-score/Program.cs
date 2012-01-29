@@ -71,7 +71,7 @@ namespace ccsrch_score
 
       score += Scores.DistinctDigitScore(hit);
 
-      return score;
+      return Math.Min(Math.Max(score, 0), 9);
     }
   }
 }

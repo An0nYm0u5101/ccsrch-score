@@ -43,7 +43,7 @@ namespace ccsrch_score
     {
       var count = hit.ToCharArray().Distinct().Count();
 
-      return Math.Max(count/2, 1);
+      return Math.Max((int)Math.Ceiling(count/2D), 1);
     }
   }
 }

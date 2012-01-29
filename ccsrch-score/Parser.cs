@@ -30,48 +30,41 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ccsrch_score
 {
-  public class Program
+  public static class Parser
   {
-    static void Main(string[] args)
+    public static string GetCardNumber(string line)
     {
-      if (args.Count() == 1 && File.Exists(args[0]))
+      string ret = null;
+      var split = line.Split('\t');
+      if (split.Count() >= 3)
       {
-        var file = args[0];
-        var reader = new StreamReader(file);
-        var writer = new StreamWriter(Parser.GetOutputName(file));
-        string line;
+        //this could be a result line, let's see if the 3rd item is a number
+        var number = split[2];
 
-        while ((line = reader.ReadLine()) != null)
-        {
-          var card = Parser.GetCardNumber(line);
-
-          if (card != null)
-          {
-            line = string.Format("{0}\t{1}", line, _ScoreHit(card));
-          }
-
-          writer.WriteLine(line);
-        }
-
-        writer.Close();
-        reader.Close();
+        if (_IsNumber(number))
+          ret = number;
       }
-      else
-      {
-        Console.WriteLine("File not found: " + args[0]);
-      }
+
+      return ret;
     }
 
-    private static int _ScoreHit(string hit)
+    public static string GetOutputName(string input)
     {
-      var score = 0;
+      var baseName = Path.GetFileNameWithoutExtension(input);
+      var ext = Path.GetExtension(input);
+      var dir = Path.GetDirectoryName(input);
 
-      score += Scores.DistinctDigitScore(hit);
+      return Path.Combine(dir, string.Format("{0}_scored{1}", baseName, ext));
+    }
 
-      return score;
+    private static bool _IsNumber(string text)
+    {
+      var regex = new Regex(@"^[-+]?[0-9]*\.?[0-9]+$");
+      return regex.IsMatch(text);
     }
   }
 }

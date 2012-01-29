@@ -27,51 +27,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
+using ccsrch_score;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ccsrch_score
+namespace Tests
 {
-  public class Program
+  [TestClass]
+  public class GetOutputNameTests
   {
-    static void Main(string[] args)
+    [TestMethod]
+    public void PathShouldBeValid()
     {
-      if (args.Count() == 1 && File.Exists(args[0]))
-      {
-        var file = args[0];
-        var reader = new StreamReader(file);
-        var writer = new StreamWriter(Parser.GetOutputName(file));
-        string line;
-
-        while ((line = reader.ReadLine()) != null)
-        {
-          var card = Parser.GetCardNumber(line);
-
-          if (card != null)
-          {
-            line = string.Format("{0}\t{1}", line, _ScoreHit(card));
-          }
-
-          writer.WriteLine(line);
-        }
-
-        writer.Close();
-        reader.Close();
-      }
-      else
-      {
-        Console.WriteLine("File not found: " + args[0]);
-      }
-    }
-
-    private static int _ScoreHit(string hit)
-    {
-      var score = 0;
-
-      score += Scores.DistinctDigitScore(hit);
-
-      return score;
+      Assert.AreEqual(@"C:\output_scored.txt", Parser.GetOutputName(@"C:\output.txt"));
     }
   }
 }

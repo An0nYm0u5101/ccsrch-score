@@ -45,6 +45,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetCardNumberTests.cs" />
+    <Compile Include="GetOutputNameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DisctinctDigitTests.cs" />
   </ItemGroup>

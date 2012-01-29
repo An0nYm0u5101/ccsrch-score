@@ -42,5 +42,11 @@ namespace Tests
     {
       Assert.AreEqual("5105105105105100", Parser.GetCardNumber(@"./testdata.txt	MASTERCARD	5105105105105100	51	1326535846	1326454017	1326454017"));
     }
+
+    [TestMethod]
+    public void PathShouldBeValidFull()
+    {
+      Assert.AreEqual("4000600080000002", Parser.GetCardNumber(@"c:\/CCC2/Core-Static/1045.mst	VISA	4000600080000002	35749	1316793696	1319042860	1316793696"));
+    }
   }
 }

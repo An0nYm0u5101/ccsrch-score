@@ -35,12 +35,70 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Tests
 {
   [TestClass]
-  public class FileTypeTests
+  public class ScoreTests
   {
-    [TestMethod]
-    public void ShouldBeMinusThree()
+    [TestClass]
+    public class FileTypeTests
     {
-      Assert.AreEqual(-3, Scores.FileTypeScore(string.Empty, "test.bmp"));
+      [TestMethod]
+      public void ShouldBeMinusThree()
+      {
+        Assert.AreEqual(-3, Scores.FileTypeScore(string.Empty, "test.bmp"));
+      }
+    }
+
+    [TestClass]
+    public class FileNameTests
+    {
+      [TestMethod]
+      public void ShouldBeMinusThree()
+      {
+        Assert.AreEqual(-3, Scores.FileNameScore(string.Empty, "index.dat"));
+      }
+
+      [TestMethod]
+      public void ShouldBeMinusNintyNine()
+      {
+        Assert.AreEqual(-99, Scores.FileNameScore(string.Empty, "ntuser.dat"));
+      }
+    }
+
+    [TestClass]
+    public class DisctinctDigitTests
+    {
+      [TestMethod]
+      public void ScoreShouldBeNonZero()
+      {
+        Assert.AreNotEqual(0, Scores.DistinctDigitScore("1234123412341234"));
+      }
+
+      [TestMethod]
+      public void ScoreShouldBeOne()
+      {
+        Assert.AreEqual(1, Scores.DistinctDigitScore("1111111111111111"));
+      }
+
+      [TestMethod]
+      public void ScoreShouldBeTwo()
+      {
+        Assert.AreEqual(2, Scores.DistinctDigitScore("1234123412341234"));
+      }
+
+      [TestMethod]
+      public void ScoreShouldBeFive()
+      {
+        Assert.AreEqual(5, Scores.DistinctDigitScore("9876543210123456"));
+      }
+    }
+
+    [TestClass]
+    public class CommonFalsePositivesTests
+    {
+      [TestMethod]
+      public void ShouldBeMinusNintyNine()
+      {
+        Assert.AreEqual(-99, Scores.CommonFalsePositiveScore("344455566677788"));
+      }
     }
   }
 }

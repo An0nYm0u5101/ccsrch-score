@@ -25,36 +25,52 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //*****************************************************************************
 
+using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using ccsrch_score;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
   [TestClass]
-  public class DisctinctDigitTests
+  public class ParserTests
   {
-    [TestMethod]
-    public void ScoreShouldBeNonZero()
+    [TestClass]
+    public class GetFileNameTests
     {
-      Assert.AreNotEqual(0, Scores.DistinctDigitScore("1234123412341234"));
+      [TestMethod]
+      public void PathShouldBeValidFull()
+      {
+        Assert.AreEqual(@"c:\/CCC2/Core-Static/1045.mst", Parser.GetFileName(@"c:\/CCC2/Core-Static/1045.mst	VISA	4000600080000002	35749	1316793696	1319042860	1316793696"));
+      }
     }
 
-    [TestMethod]
-    public void ScoreShouldBeOne()
+    [TestClass]
+    public class GetOutputNameTests
     {
-      Assert.AreEqual(1, Scores.DistinctDigitScore("1111111111111111"));
+      [TestMethod]
+      public void PathShouldBeValid()
+      {
+        Assert.AreEqual(@"C:\output_scored.txt", Parser.GetOutputName(@"C:\output.txt"));
+      }
     }
 
-    [TestMethod]
-    public void ScoreShouldBeTwo()
+    [TestClass]
+    public class GetCardNumberTests
     {
-      Assert.AreEqual(2, Scores.DistinctDigitScore("1234123412341234"));
-    }
+      [TestMethod]
+      public void PathShouldBeValid()
+      {
+        Assert.AreEqual("5105105105105100", Parser.GetCardNumber(@"./testdata.txt	MASTERCARD	5105105105105100	51	1326535846	1326454017	1326454017"));
+      }
 
-    [TestMethod]
-    public void ScoreShouldBeFive()
-    {
-      Assert.AreEqual(5, Scores.DistinctDigitScore("9876543210123456"));
+      [TestMethod]
+      public void PathShouldBeValidFull()
+      {
+        Assert.AreEqual("4000600080000002", Parser.GetCardNumber(@"c:\/CCC2/Core-Static/1045.mst	VISA	4000600080000002	35749	1316793696	1319042860	1316793696"));
+      }
     }
   }
 }

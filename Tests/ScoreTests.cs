@@ -100,5 +100,15 @@ namespace Tests
         Assert.AreEqual(-99, Scores.CommonFalsePositiveScore("344455566677788"));
       }
     }
+
+    [TestClass]
+    public class KnownBinScoreTests
+    {
+      [TestMethod]
+      public void ShouldBeTrue()
+      {
+        Assert.AreEqual(true, Scores.IsKnownBin("1234123412341234", new List<string>() { "123412" }));
+      }
+    }
   }
 }

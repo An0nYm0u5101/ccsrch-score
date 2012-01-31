@@ -111,5 +111,16 @@ namespace ccsrch_score
 
       return ret;
     }
+
+    public static bool IsKnownBin(string hit, List<string> bins)
+    {
+      var bin = hit.Substring(0, 6);
+      var ret = false;
+
+      if (bins.Contains(bin))
+        ret = true;
+
+      return ret;
+    }
   }
 }

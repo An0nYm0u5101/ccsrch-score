@@ -36,6 +36,8 @@ namespace ccsrch_score
 {
   public class Program
   {
+    private static List<string> _bins = new List<string>();
+    
     static void Main(string[] args)
     {
       if (args.Count() >= 1 && File.Exists(args[0]))
@@ -50,6 +52,8 @@ namespace ccsrch_score
         if (args.Count() >= 2)
           int.TryParse(args[1], out min);
 
+        _LoadBinData();
+
         while ((line = reader.ReadLine()) != null)
         {
           var card = Parser.GetCardNumber(line);
@@ -60,6 +64,9 @@ namespace ccsrch_score
             var score = _ScoreHit(card, target);
             line = string.Format("{0}\t{1}", line, score);
 
+            if (Scores.IsKnownBin(card, _bins))
+              line += "\t*";
+
             if (score < min)
               line = null;
           }
@@ -69,7 +76,7 @@ namespace ccsrch_score
 
           count++;
 
-          if (count % 5000 == 0)
+          if (count % 1000 == 0)
             Console.WriteLine("Completed: " + count);
         }
 
@@ -92,6 +99,21 @@ namespace ccsrch_score
       score += Scores.FileNameScore(hit, path);
 
       return Math.Min(Math.Max(score, 0), 9);
+    }
+
+    private static void _LoadBinData()
+    {
+      var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+      var bins = Path.Combine(path, "bin.txt");
+      
+      if (File.Exists(bins))
+      {
+        Console.WriteLine("Found bins.txt. Loading...");
+
+        _bins = File.ReadAllLines(bins).ToList();
+
+        Console.WriteLine(string.Format("Loaded {0} BINs.", _bins.Count()));
+      }
     }
   }
 }

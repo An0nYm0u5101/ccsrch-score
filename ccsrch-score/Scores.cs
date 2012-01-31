@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -44,6 +45,65 @@ namespace ccsrch_score
       var count = hit.ToCharArray().Distinct().Count();
 
       return Math.Max((int)Math.Ceiling(count/2D), 1);
+    }
+
+    public static int CommonFalsePositiveScore(string hit)
+    {
+      var ret = 0;
+
+      if (hit == "344455566677788")
+        ret = -99;
+
+      return ret;
+    }
+
+    public static int FileTypeScore(string hit, string path)
+    {
+      var ext = Path.GetExtension(path);
+      var ret = 0;
+
+      switch (ext)
+      {
+        case ".pdb":
+        case ".dll":
+        case ".exe":
+        case ".png":
+        case ".gif":
+        case ".jpg":
+        case ".jpeg":
+        case ".bmp":
+        case ".wmv":
+        case ".mov":
+        case ".jar":
+        case ".cab":
+        case ".msi":
+        case ".zip":
+        case ".rtf":
+        case ".pdf":
+          ret = -3;
+          break;
+      }
+
+      return ret;
+    }
+
+    public static int FileNameScore(string hit, string path)
+    {
+      var fileName = Path.GetFileName(path);
+      var ret = 0;
+
+      switch (fileName.ToLower())
+      {
+        case "ntuser.dat":
+        case "iconcache.db":
+          ret = -99;
+          break;
+        case "index.dat":
+          ret = -3;
+          break;
+      }
+
+      return ret;
     }
   }
 }

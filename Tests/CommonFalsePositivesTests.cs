@@ -26,58 +26,21 @@
 //*****************************************************************************
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Linq;
+using ccsrch_score;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ccsrch_score
+namespace Tests
 {
-  public static class Parser
+  [TestClass]
+  public class CommonFalsePositivesTests
   {
-    public static string GetCardNumber(string line)
+    [TestMethod]
+    public void ShouldBeMinusNintyNine()
     {
-      string ret = null;
-      var split = line.Split('\t');
-      if (split.Count() >= 3)
-      {
-        //this could be a result line, let's see if the 3rd item is a number
-        var number = split[2];
-
-        if (_IsNumber(number))
-          ret = number;
-      }
-
-      return ret;
-    }
-
-    public static string GetFileName(string line)
-    {
-      string ret = null;
-      var split = line.Split('\t');
-      if (split.Count() >= 3)
-      {
-        //this could be a result line, let's see if the 3rd item is a number
-        ret = split[0];
-      }
-
-      return ret;
-    }
-
-    public static string GetOutputName(string input)
-    {
-      var baseName = Path.GetFileNameWithoutExtension(input);
-      var ext = Path.GetExtension(input);
-      var dir = Path.GetDirectoryName(input);
-
-      return Path.Combine(dir, string.Format("{0}_scored{1}", baseName, ext));
-    }
-
-    private static bool _IsNumber(string text)
-    {
-      var regex = new Regex(@"^[-+]?[0-9]*\.?[0-9]+$");
-      return regex.IsMatch(text);
+      Assert.AreEqual(-99, Scores.CommonFalsePositiveScore("344455566677788"));
     }
   }
 }

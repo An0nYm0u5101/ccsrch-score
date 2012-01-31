@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,23 +38,39 @@ namespace ccsrch_score
   {
     static void Main(string[] args)
     {
-      if (args.Count() == 1 && File.Exists(args[0]))
+      if (args.Count() >= 1 && File.Exists(args[0]))
       {
         var file = args[0];
+        var min = 0;
         var reader = new StreamReader(file);
         var writer = new StreamWriter(Parser.GetOutputName(file));
         string line;
+        var count = 0;
+
+        if (args.Count() >= 2)
+          int.TryParse(args[1], out min);
 
         while ((line = reader.ReadLine()) != null)
         {
           var card = Parser.GetCardNumber(line);
+          var target = Parser.GetFileName(line);
 
           if (card != null)
           {
-            line = string.Format("{0}\t{1}", line, _ScoreHit(card));
+            var score = _ScoreHit(card, target);
+            line = string.Format("{0}\t{1}", line, score);
+
+            if (score < min)
+              line = null;
           }
 
-          writer.WriteLine(line);
+          if (!string.IsNullOrEmpty(line))
+            writer.WriteLine(line);
+
+          count++;
+
+          if (count % 5000 == 0)
+            Console.WriteLine("Completed: " + count);
         }
 
         writer.Close();
@@ -65,11 +82,14 @@ namespace ccsrch_score
       }
     }
 
-    private static int _ScoreHit(string hit)
+    private static int _ScoreHit(string hit, string path)
     {
       var score = 0;
 
       score += Scores.DistinctDigitScore(hit);
+      score += Scores.CommonFalsePositiveScore(hit);
+      score += Scores.FileTypeScore(hit, path);
+      score += Scores.FileNameScore(hit, path);
 
       return Math.Min(Math.Max(score, 0), 9);
     }

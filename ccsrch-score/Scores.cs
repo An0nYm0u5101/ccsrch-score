@@ -64,6 +64,10 @@ namespace ccsrch_score
 
       switch (ext)
       {
+        case ".rtf":
+        case ".pdf":
+          ret = -3;
+          break;
         case ".pdb":
         case ".dll":
         case ".exe":
@@ -72,15 +76,17 @@ namespace ccsrch_score
         case ".jpg":
         case ".jpeg":
         case ".bmp":
+        case ".psd":
+        case ".dng":
+        case ".nef":
         case ".wmv":
         case ".mov":
         case ".jar":
         case ".cab":
         case ".msi":
         case ".zip":
-        case ".rtf":
-        case ".pdf":
-          ret = -3;
+        case ".manifest":
+          ret = -99;
           break;
       }
 
